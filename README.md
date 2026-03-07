@@ -6,7 +6,7 @@ A simple Flask application showcasing the 21st Agents SDK product page.
 
 - `/` - Home page displaying product info
 - `/api/product` - JSON API for product data
-- `/api/vote` - POST endpoint to vote for the product
+- `/api/vote` - POST endpoint to vote for the product (one vote per IP)
 - `/health` - Health check endpoint
 
 ## Setup
@@ -23,3 +23,5 @@ python app.py
 ```
 
 The app will start on `http://localhost:5000`
+
+作者: stlin256的openclaw

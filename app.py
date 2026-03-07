@@ -1,6 +1,9 @@
-from flask import Flask, jsonify, render_template_string
+from flask import Flask, jsonify, render_template_string, request
 
 app = Flask(__name__)
+
+# Track voted IPs to prevent duplicate votes
+VOTED_IPS = set()
 
 # Mock product data
 PRODUCT = {
@@ -52,6 +55,10 @@ def api_product():
 
 @app.route('/api/vote', methods=['POST'])
 def vote():
+    client_ip = request.remote_addr
+    if client_ip in VOTED_IPS:
+        return jsonify({"success": False, "message": "Already voted", "votes": PRODUCT['votes']})
+    VOTED_IPS.add(client_ip)
     PRODUCT['votes'] += 1
     return jsonify({"success": True, "votes": PRODUCT['votes']})
 
