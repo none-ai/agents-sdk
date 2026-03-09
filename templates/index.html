@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - ProductHunt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .description {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .vote-section {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .vote-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .vote-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .vote-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .vote-message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+
+        .features-preview {
+            margin-top: 30px;
+        }
+
+        .features-preview h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .feature-item {
+            padding: 10px 15px;
+            background: #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .link-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .link-btn:hover {
+            background: #555;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .comments-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .comment-form {
+            margin-bottom: 20px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .comment-form textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .comment-form button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .comment {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .comment-time {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ product.name }}</h1>
+            <p class="tagline">{{ product.tagline }}</p>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/features">Features</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <p class="description">{{ product.description }}</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="votes">{{ product.votes }}</div>
+                    <div class="stat-label">Votes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ product.comments }}</div>
+                    <div class="stat-label">Comments</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ product.maker }}</div>
+                    <div class="stat-label">Maker</div>
+                </div>
+            </div>
+
+            <div class="vote-section">
+                <button class="vote-btn" id="voteBtn" onclick="vote()">
+                    Upvote this Product
+                </button>
+                <p class="vote-message" id="voteMessage"></p>
+            </div>
+
+            <div class="links">
+                <a href="{{ product.website }}" class="link-btn">Website</a>
+                <a href="{{ product.github }}" class="link-btn">GitHub</a>
+                <a href="{{ product.documentation }}" class="link-btn">Docs</a>
+            </div>
+
+            <div class="features-preview">
+                <h3>Key Features</h3>
+                <div class="feature-list">
+                    {% for feature in product.features[:4] %}
+                    <div class="feature-item">{{ feature }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="comments-section">
+                <h3>Comments</h3>
+                <div class="comment-form">
+                    <input type="text" id="commentName" placeholder="Your name (optional)">
+                    <textarea id="commentContent" placeholder="Share your thoughts..."></textarea>
+                    <button onclick="addComment()">Post Comment</button>
+                </div>
+                <div id="commentsList">
+                    {% for comment in comments %}
+                    <div class="comment">
+                        <span class="comment-author">{{ comment.name }}</span>
+                        <span class="comment-time">{{ comment.timestamp[:10] }}</span>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Made with love by {{ product.maker }}
+        </div>
+    </div>
+
+    <script>
+        async function vote() {
+            const btn = document.getElementById('voteBtn');
+            const message = document.getElementById('voteMessage');
+
+            btn.disabled = true;
+            btn.textContent = 'Voting...';
+
+            try {
+                const response = await fetch('/api/vote', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('votes').textContent = data.votes;
+                    message.textContent = 'Thanks for voting!';
+                    message.className = 'vote-message success';
+                    btn.textContent = 'Voted!';
+                } else {
+                    message.textContent = data.message || 'Already voted';
+                    message.className = 'vote-message error';
+                    btn.textContent = 'Already Voted';
+                }
+            } catch (error) {
+                message.textContent = 'Error voting. Please try again.';
+                message.className = 'vote-message error';
+                btn.disabled = false;
+                btn.textContent = 'Upvote this Product';
+            }
+        }
+
+        async function addComment() {
+            const name = document.getElementById('commentName').value || 'Anonymous';
+            const content = document.getElementById('commentContent').value;
+
+            if (!content) {
+                alert('Please enter a comment');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/comments', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name, content})
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('commentContent').value = '';
+                    loadComments();
+                } else {
+                    alert(data.message || 'Error posting comment');
+                }
+            } catch (error) {
+                alert('Error posting comment');
+            }
+        }
+
+        async function loadComments() {
+            try {
+                const response = await fetch('/api/comments');
+                const data = await response.json();
+
+                const list = document.getElementById('commentsList');
+                list.innerHTML = data.comments.map(c => `
+                    <div class="comment">
+                        <span class="comment-author">${c.name}</span>
+                        <span class="comment-time">${c.timestamp.slice(0, 10)}</span>
+                        <p>${c.content}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading comments');
+            }
+        }
+
+        // Check if already voted
+        fetch('/api/vote/status')
+            .then(r => r.json())
+            .then(data => {
+                if (data.voted) {
+                    const btn = document.getElementById('voteBtn');
+                    btn.disabled = true;
+                    btn.textContent = 'Already Voted';
+                }
+            });
+    </script>
+</body>
+</html>
