@@ -244,6 +244,31 @@ def add_comment():
     }), 201
 
 
+@app.route('/api/comments/<int:comment_id>', methods=['DELETE'])
+def delete_comment(comment_id):
+    """Delete a comment by ID (by the same IP that posted it or admin)."""
+    client_ip = get_client_ip()
+
+    # Find the comment
+    comment = next((c for c in COMMENTS if c['id'] == comment_id), None)
+    if not comment:
+        return jsonify({"error": "Not found", "message": "Comment not found"}), 404
+
+    # Check if the requester is the comment author or admin
+    admin_key = request.headers.get('X-Admin-Key')
+    if comment['ip'] != client_ip and admin_key != app.config['SECRET_KEY']:
+        return jsonify({"error": "Forbidden", "message": "You can only delete your own comments"}), 403
+
+    COMMENTS.remove(comment)
+    PRODUCT['comments'] = len(COMMENTS)
+    logger.info(f"Comment {comment_id} deleted by {client_ip}")
+
+    return jsonify({
+        "success": True,
+        "message": "Comment deleted successfully"
+    })
+
+
 # Health and status
 @app.route('/health')
 def health():

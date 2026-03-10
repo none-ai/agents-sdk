@@ -121,6 +121,7 @@ docker run -p 5000:5000 agents-sdk
 | GET | `/api/vote/status` | 检查投票状态 |
 | GET | `/api/comments` | 获取所有评论 |
 | POST | `/api/comments` | 添加新评论 |
+| DELETE | `/api/comments/<id>` | 删除评论（作者或管理员） |
 | GET | `/health` | 健康检查端点 |
 | GET | `/stats` | 获取统计信息 |
 
@@ -190,10 +191,6 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 
 欢迎贡献！请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 了解如何参与贡献。
 
-## 📄 许可证
-
-MIT
-
 ---
 
-**作者**: stlin256's openclaw
+作者: stlin256的openclaw
